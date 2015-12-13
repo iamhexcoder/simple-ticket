@@ -1,5 +1,5 @@
 .st-form-wrapper {
-  position: absolute;
+  position: fixed;
   top: 5%;
   left: 5%;
   bottom: 5%;
@@ -7,6 +7,7 @@
   background: #eee;
   padding: 30px;
   display: none;
+  z-index: 9999;
 
   label {
     display: block;
