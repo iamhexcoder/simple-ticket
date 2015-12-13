@@ -1,0 +1,50 @@
+.st-form-wrapper {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  bottom: 5%;
+  right: 5%;
+  background: #eee;
+  padding: 30px;
+  display: none;
+
+  label {
+    display: block;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  input {
+    display: block;
+
+    &[type=submit] {
+      margin-top: 50px;
+    }
+  }
+
+  input,
+  textarea {
+    margin-bottom: 50px;
+  }
+
+  textarea {
+    width: 100%;
+  }
+}
+
+.st-submit-form--url {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 20px;
+
+  span {
+    margin-left: 40px;
+    font-family: monospace;
+    text-transform: lowercase;
+    background-color: darken(#eee, 5%);
+    padding: 5px;
+  }
+}

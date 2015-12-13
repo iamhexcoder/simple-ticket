@@ -73,7 +73,9 @@ class Simple_Ticket_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->simple_ticket, plugin_dir_url( __FILE__ ) . 'css/simple-ticket-public.css', array(), $this->version, 'all' );
+		if(is_admin_bar_showing()) {
+			wp_enqueue_style( $this->simple_ticket, plugin_dir_url( __DIR__ ) . 'assets/dist/css/simple-ticket.public.css');
+		}
 
 	}
 
@@ -96,7 +98,9 @@ class Simple_Ticket_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->simple_ticket, plugin_dir_url( __FILE__ ) . 'js/simple-ticket-public.js', array( 'jquery' ), $this->version, false );
+		if(is_admin_bar_showing()) {
+			wp_enqueue_script( $this->simple_ticket, plugin_dir_url( __DIR__ ) . 'assets/dist/js/simple-ticket.public.js', array( 'jquery' ), null, false );
+		}
 
 	}
 

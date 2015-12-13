@@ -52,6 +52,10 @@ class Simple_Ticket_Admin {
 		$this->simple_ticket = $simple_ticket;
 		$this->version = $version;
 
+		// add_action( 'admin_bar_menu', array($this, 'st_admin_bar'), 1000 );
+		add_action( 'admin_bar_menu', array($this, 'st_admin_bar'), 999 );
+		add_action('wp_footer', array($this, 'st_footer_form') );
+
 	}
 
 	/**
@@ -73,7 +77,9 @@ class Simple_Ticket_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->simple_ticket, plugin_dir_url( __FILE__ ) . 'css/simple-ticket-admin.css', array(), $this->version, 'all' );
+		if(is_admin_bar_showing()) {
+			wp_enqueue_style( $this->simple_ticket, plugin_dir_url( __DIR__ ) . 'assets/dist/css/simple-ticket.public.css');
+		}
 
 	}
 
@@ -95,9 +101,62 @@ class Simple_Ticket_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		wp_enqueue_script( $this->simple_ticket, plugin_dir_url( __FILE__ ) . 'js/simple-ticket-admin.js', array( 'jquery' ), $this->version, false );
+		if(is_admin_bar_showing()) {
+			wp_enqueue_script( $this->simple_ticket, plugin_dir_url( __DIR__ ) . 'assets/dist/js/simple-ticket.public.js', array( 'jquery' ), null, false );
+		}
 
 	}
 
+	/**
+	 * Create admin bar nodes
+	 */
+	public function st_admin_bar( $wp_admin_bar ) {
+		// Parent Form Node
+		$wp_admin_bar->add_node(
+			array(
+				'id' => 'simple-ticket-menu-item',
+				'title' => __( 'j2 Support', 'textdomain' ),
+				'href' => false,
+				'meta'  => array( 'class' => 'simple-ticket-links' )
+			)
+		);
+
+		$wp_admin_bar->add_node(
+			array(
+				'id' => 'simple-ticket-menu-call-form',
+				'title' => __( 'Submit a Ticket', 'textdomain' ),
+				'parent' => 'simple-ticket-menu-item',
+				'href' => '#st-submit-form',
+				'meta'  => array( 'class' => 'simple-ticket-link-form-toggle' )
+			)
+		);
+	}
+
+	/**
+	 * Create form HTML and inject into footer
+	 */
+	public function st_footer_form() {
+
+		if(is_admin_bar_showing()) {
+			$url = 'http://' . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'];
+			global $current_user;
+
+			$html =		'<div id="st-submit-form" class="st-form-wrapper">';
+			$html .=		'<p class="st-submit-form--url">Current URL: <span>' . $url . '</span></p>';
+			$html .= 		'<form id="simple-ticket-form">';
+			$html .= 			'<input type="hidden" name="simple-ticket-current-url" value="http://' . $url . '" />';
+			$html .= 			'<input type="hidden" name="simple-ticket-user-name" value="' . $current_user->display_name . '" />';
+			$html .= 			'<input type="hidden" name="simple-ticket-user-email" value="' . $current_user->user_email . '" />';
+			$html .= 			'<label for="simple-ticket-description">Description</label>';
+			$html .= 			'<textarea name="simple-ticket-description"></textarea>';
+			$html .= 			'<label for="simple-ticket-screenshot">Upload Screenshot</label>';
+			$html .= 			'<input type="file" name="simple-ticket-screenshot" accept="image/*">';
+			$html .= 			'<input type="submit">';
+			$html .= 		'</form>';
+			$html .=	'</div>';
+
+			echo $html;
+		}
+
+	}
 }
