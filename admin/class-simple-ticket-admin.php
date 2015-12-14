@@ -349,11 +349,14 @@ class Simple_Ticket_Admin {
 
 	/* Create SMTP Pass Field */
 	public function st_encryption_render() {
+		$val = isset($this->options['smtp_encrypt']) ? $this->options['smtp_encrypt'] : '0';
 
-		$html = 	'';
-	  $html .= '<input type="radio" name="simple_ticket_options[smtp_encrypt]" value="ssl"' . checked( 'ssl', isset( $this->options['smtp_encrypt'] ), true ) . '/> SSL';
-	  $html .= '<input type="radio" name="simple_ticket_options[smtp_encrypt]" value="tls"' . checked( 'tls', isset( $this->options['smtp_encrypt'] ), true ) . '/> TSL';
-	  $html .= '<input type="radio" name="simple_ticket_options[smtp_encrypt]" value="no_encrypt"' . checked( 'no_encrypt', isset( $this->options['smtp_encrypt'] ), true ) . '/> No Encryption';
+		$html = 	'<label for="st-smtp-ssl">SSL</label>';
+	  $html .= 	'<input type="radio" id="st-smpt-ssl" name="simple_ticket_options[smtp_encrypt]" value="ssl"' . checked( 'ssl', $val, false ) . '/>';
+	  $html .= 	'<label for="st-smtp-tls">TLS</label>';
+	  $html .= '<input type="radio" id="st-smpt-tls" name="simple_ticket_options[smtp_encrypt]" value="tls"' . checked( 'tls', $val, false ) . '/>';
+	  $html .= 	'<label for="st-smpt-no-encrypt">No Encryption</label>';
+	  $html .= '<input type="radio" id="st-smpt-no-encrypt" name="simple_ticket_options[smtp_encrypt]" value="no_encrypt"' . checked( 'no_encrypt', $val, false ) . '/>';
 
 	  echo $html;
 	}
